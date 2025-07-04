@@ -17,5 +17,5 @@ class OrderItem(models.Model):
 
 class TableBooking(models.Model):
     name = models.CharField(max_length=100)
-    booking_time = models.DateTimeField()
+    booking_time = models.DateTimeField(auto_now_add=True)
     num_people = models.PositiveIntegerField()

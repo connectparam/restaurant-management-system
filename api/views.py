@@ -12,14 +12,17 @@ def menu_list(request):
         return JsonResponse({'menu_items': items}, safe=False)
 
     if request.method == 'POST':
-        data = json.loads(request.body)
-        item = MenuItem.objects.create(
-            name=data['name'],
-            description=data.get('description', ''),
-            price=data['price'],
-            available=data.get('available', True)
-        )
-        return JsonResponse({'id': item.id, 'message': 'Item created'}, status=201)
+        data_list = json.loads(request.body)
+        item_id = []
+        for data in data_list:
+            item = MenuItem.objects.create(
+                name=data['name'],
+                description=data.get('description', ''),
+                price=data['price'],
+                available=data.get('available', True)
+            )
+            item_id.append(item.id)
+        return JsonResponse({'ids': item_id, 'message': 'Item created'}, status=201)
 
 @csrf_exempt
 def menu_detail(request, pk):
@@ -90,7 +93,7 @@ def booking_list(request):
         data = json.loads(request.body)
         booking = TableBooking.objects.create(
             name=data['name'],
-            booking_time=data['booking_time'],
+            # booking_time=data['booking_time'],
             num_people=data['num_people']
         )
         return JsonResponse({'id': booking.id, 'message': 'Booking created'}, status=201)
